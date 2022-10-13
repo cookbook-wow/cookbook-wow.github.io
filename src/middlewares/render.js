@@ -6,7 +6,7 @@ export default function initialize() {
     const root = document.querySelector('main');
     updateUserNav();
 
-    return function decorateContext(ctx, next) {
+    return function (ctx, next) {
         ctx.render = boundRender;
         ctx.updateUserNav = updateUserNav;
 
@@ -27,4 +27,5 @@ export default function initialize() {
     function boundRender(content) {
         render(content, root);
     }
+
 }

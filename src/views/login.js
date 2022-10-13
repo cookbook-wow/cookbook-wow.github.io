@@ -1,7 +1,7 @@
-import { login } from '../api/api.js';
+import { login } from '../api/user.js';
 import { html } from '../lib.js';
 import { createSubmitHandler } from '../util.js';
-import { field } from './common.js';
+import { errorMsg, field } from './common.js';
 
 
 const loginTemplate = (onSubmit, errors, data) => html`
@@ -9,9 +9,10 @@ const loginTemplate = (onSubmit, errors, data) => html`
     <article>
         <h2>Login</h2>
         <form @submit=${onSubmit} id="loginForm">
-            ${errors ? html`<p class="error">${errors.message}</p>` : null}
+            ${errorMsg(errors)}
+
             ${field({ label: 'Username', name: 'username', value: data.username, error: errors.username })}
-            ${field({ label: 'Password', name: 'password',  type: 'password', error: errors.password })}
+            ${field({ label: 'Password', name: 'password', type: 'password', error: errors.password })}
             <input type="submit" value="Login">
         </form>
     </article>
@@ -29,13 +30,11 @@ export function loginPage(ctx) {
             if (username == '' || password == '') {
                 throw {
                     message: 'Please fill all fields!',
-                    error: {
-                        name: true,
-                        password: true
-                    }
+                    username: true,
+                    password: true
                 };
             }
-            
+
             await login(username, password);
             event.target.reset();
             ctx.updateSession();

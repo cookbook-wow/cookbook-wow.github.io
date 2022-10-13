@@ -1,3 +1,4 @@
+import { notify } from '../lib/notify.js';
 import { clearUserData, getUserData, setUserData } from '../util.js';
 
 
@@ -9,12 +10,15 @@ async function request(url, options) {
 
         if (response.ok == false) {
             const error = await response.json();
-            throw new Error(error.error);
+            throw {
+                message: error.error,
+                code: error.code
+            };
         }
 
         return response.json();
     } catch (err) {
-        alert(err.message);
+        notify(err.message);
         throw err;
     }
 }
@@ -24,7 +28,7 @@ function createOptions(method = 'get', data) {
         method,
         headers: {
             'X-Parse-Application-Id': 'MbbRfe7yKfBIuMwccJPcLlTCSDtHnxQGKjkpknVh',
-            'X-Parse-REST-API-Key': 'PJRQ407Qy3GDk2ymChnT3NN7x4QlORxMjHhUmKj4',
+            'X-Parse-REST-API-Key': 'PJRQ407Qy3GDk2ymChnT3NN7x4QlORxMjHhUmKj4'
         }
     };
 
@@ -84,6 +88,6 @@ export async function register(username, email, password) {
 }
 
 export async function logout() {
-    await get('/logout');
+    post('/logout');
     clearUserData();
 }

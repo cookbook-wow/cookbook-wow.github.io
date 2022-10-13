@@ -45,9 +45,10 @@ input[type="submit"]:hover {
     cursor: pointer;
 }
 
-input.error textarea.error{
+input.error,
+textarea.error {
     background-color: #ffc5c5;
-    border:  1px solid red;
+    border: 1px solid red;
 }
 
 p.error {
